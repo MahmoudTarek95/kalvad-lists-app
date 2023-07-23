@@ -1,4 +1,4 @@
-export interface List {
+export interface Book {
     name:string;
     auther:string;
     year:string | number;

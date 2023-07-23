@@ -8,7 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatButtonModule } from '@angular/material/button';
-import { List } from '../interfaces/list';
+import { Book } from '../interfaces/book';
 
 @Component({
   selector: 'app-lists',
@@ -19,12 +19,14 @@ import { List } from '../interfaces/list';
   encapsulation: ViewEncapsulation.None
 })
 export class ListsComponent {
+  // Form group for adding a new book
   addBookForm: FormGroup = new FormGroup({
     bookName: new FormControl('', [Validators.required]),
     year: new FormControl('', [Validators.required]),
     auther: new FormControl('', [Validators.required])
   })
-  booksList = signal<List[]>([
+  // setup signal for handling list status
+  booksList = signal<Book[]>([
     {
       name: "Dune",
       year: "1965",
@@ -56,50 +58,77 @@ export class ListsComponent {
       favorite: false
     }
   ])
-  myFavoriteBooks = signal<List[]>([])
+  myFavoriteBooks = signal<Book[]>([])
 
+  // Add new book method
   addBook() {
-    const submitedData: List = {
+    const submitedData: Book = {
       name: this.addBookForm.controls['bookName'].value,
       year: this.addBookForm.controls['year'].value,
       auther: this.addBookForm.controls['auther'].value,
       favorite: false
     }
-    this.booksList.update((books: List[]) => {
+
+    // Update books list 
+    this.booksList.update((books: Book[]) => {
+      // using spread operator to add new value to the list.
       books = [...books, submitedData]
       return books
     })
+
+    //Reset all form fields
     this.addBookForm.reset()
   }
-  deleteBook(book: List) {
-    this.booksList.update((books: List[]) => {
+
+  // Delete book from list
+  deleteBook(book: Book) {
+    //update book list.
+    this.booksList.update((books: Book[]) => {
+
+      // remove book from list based on year (we can use any prop).
       books = books.filter(b => b.year != book.year)
       return books
     })
-    this.myFavoriteBooks.update((fBooks: List[]) => {
+    // Update favorite books when deleting a book
+    this.myFavoriteBooks.update((fBooks: Book[]) => {
+
+      // check if this book on this list
       if (fBooks.includes(book)) {
+        // remove book from favorite list based on year (we can use any prop).
         fBooks = fBooks.filter(b => b.year != book.year)
       }
       return fBooks;
     })
   }
-
-  addOrRemoveBookToMyFavorite(book: List) {
-    this.myFavoriteBooks.update((value: List[]) => {
+  // add or remove favorite book 
+  addOrRemoveBookToMyFavorite(book: Book) {
+    this.myFavoriteBooks.update((value: Book[]) => {
+      // check if the favorite list has this book.
       if (!value.includes(book)) {
+
+        // set this book as a favorite
         book.favorite = true
+
+        // using spread operator to add new value to the list.
         value = [...value, book]
       } else {
+
+        // unfavorite this book
         book.favorite = false
+
+        // remove book from favorite list based on year (we can use any prop).
         value = value.filter(b => b.year != book.year)
       }
       return value
     })
   }
 
-  removeBookFromMyFavorite(book: List) {
-    this.myFavoriteBooks.update((value: List[]) => {
+  removeBookFromMyFavorite(book: Book) {
+    this.myFavoriteBooks.update((value: Book[]) => {
+      // remove this book form favorite list
       value = value.filter(b => b.year != book.year)
+
+      // unfavorite this book
       book.favorite = false
       return value
     })
