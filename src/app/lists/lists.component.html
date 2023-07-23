@@ -1,0 +1,21 @@
+<mat-grid-list cols="2" rowHeight="2:1">
+	<mat-grid-tile>
+		<mat-selection-list>
+			<mat-list-item (click)="addBookToMyFavorite(book)" *ngFor="let book of booksList()">
+				<div matListItemTitle>{{book.name}}</div>
+				<div matListItemLine>{{book.auther}}</div>
+				<div matListItemLine>{{book.year}}</div>
+			</mat-list-item>
+		</mat-selection-list>
+	</mat-grid-tile>
+	<mat-grid-tile>
+		<mat-selection-list>
+			<mat-list-item (click)="removeBookFromMyFavorite(book)" *ngFor="let book of myFavoriteBooks()">
+				<div matListItemTitle>{{book?.name}}</div>
+				<div matListItemLine>{{book?.auther}}</div>
+				<div matListItemLine>{{book?.year}}</div>
+			</mat-list-item>
+		</mat-selection-list>
+	</mat-grid-tile>
+
+</mat-grid-list>
