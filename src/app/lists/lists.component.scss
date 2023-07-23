@@ -1,4 +1,17 @@
 .container {
+    .add-book {
+        width: 50%;
+        margin: 25px auto;
+
+        .mat-mdc-form-field {
+            display: block;
+        }
+
+        button {
+            margin-top: 15px;
+        }
+    }
+
     .mat-grid-tile {
         .mat-grid-tile-content {
             justify-content: unset;
@@ -49,14 +62,20 @@
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
-                .item-details{
-                    .sub-title{
+
+                .item-details {
+                    .sub-title {
                         opacity: .5;
                     }
                 }
-                .fav {
+
+                .icons {
                     color: red;
                     cursor: pointer;
+
+                    .favorite-icon {
+                        margin: 0 15px;
+                    }
                 }
             }
         }
@@ -83,10 +102,6 @@
             margin-bottom: 15px;
         }
     }
-
-    .empty-state-fav {
-        text-align: center;
-    }
 }
 
 .item-container {
@@ -94,7 +109,7 @@
     justify-content: space-between;
     align-items: center;
 
-    .fav {
+    .icons {
         color: red;
     }
 }

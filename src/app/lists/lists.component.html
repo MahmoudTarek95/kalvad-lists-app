@@ -1,11 +1,22 @@
 <div class="container">
-	<!-- <mat-grid-list cols="1" rowHeight="100px">
-		<mat-grid-tile>
-			<div class="add-book">
-				mmm
-			</div>
-		</mat-grid-tile>
-	</mat-grid-list> -->
+	<div class="add-book">
+		<form [formGroup]="addBookForm" (submit)="addBook()">
+			<mat-form-field>
+				<mat-label>Book Name</mat-label>
+				<input formControlName="bookName" matInput placeholder="Ex. Dune">
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Year of the book</mat-label>
+				<input formControlName="year" matInput placeholder="Ex. 1965">
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Auther name</mat-label>
+				<input formControlName="auther" matInput placeholder="Ex. Frank Herbert">
+			</mat-form-field>
+
+			<button type="submit" [disabled]="!addBookForm.valid" mat-raised-button color="primary">Add Book</button>
+		</form>
+	</div>
 	<mat-grid-list cols="2" rowHeight="">
 		<mat-grid-tile>
 			<div class="title">
@@ -14,20 +25,25 @@
 				</h2>
 				<span>You can favorite any or all of these books.</span>
 			</div>
-			<mat-selection-list>
-				<mat-list-item (click)="addOrRemoveBookToMyFavorite(book)" *ngFor="let book of booksList()">
+			<mat-selection-list *ngIf="booksList().length > 0">
+				<mat-list-item *ngFor="let book of booksList()">
 					<div class="item-container">
 						<div class="item-details">
 							<div matListItemTitle>{{book.name}}</div>
 							<div matListItemLine>{{book.auther}}</div>
 							<div matListItemLine>{{book.year}}</div>
 						</div>
-						<div class="fav">
-							<mat-icon aria-hidden="false" aria-label="favorite book"
-								[fontIcon]="book.favorite ? 'favorite': 'favorite_border' "></mat-icon>
+						<div class="icons">
+							<mat-icon class="favorite-icon" (click)="addOrRemoveBookToMyFavorite(book)" aria-hidden="false"
+								aria-label="favorite book" [fontIcon]="book.favorite ? 'favorite': 'favorite_border' "></mat-icon>
+							<mat-icon (click)="deleteBook(book)" aria-hidden="false" aria-label="remove book"
+								fontIcon="cancel"></mat-icon>
 						</div>
 					</div>
 				</mat-list-item>
+			</mat-selection-list>
+			<mat-selection-list *ngIf="booksList().length === 0">
+				<p class="empty-state-fav">There are no books added yet.</p>
 			</mat-selection-list>
 		</mat-grid-tile>
 		<mat-grid-tile>
@@ -35,27 +51,27 @@
 				<h2>
 					My Favorite Books
 				</h2>
-				<span>You can sort your favorite list by darg & drop books.</span>
+				<span>You can sort your favorite list by drag & drop books.</span>
 			</div>
 			<div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event)" *ngIf="myFavoriteBooks().length > 0">
 				<div class="drag-box" cdkDrag *ngFor="let book of myFavoriteBooks()">
 					<div class="item-container">
 						<div class="item-details">
-							<div >{{book?.name}}</div>
-							<div class="sub-title" >{{book?.auther}}</div>
-							<div class="sub-title" >{{book?.year}}</div>
+							<div>{{book?.name}}</div>
+							<div class="sub-title">{{book?.auther}}</div>
+							<div class="sub-title">{{book?.year}}</div>
 						</div>
-						<div class="fav" (click)="removeBookFromMyFavorite(book)">
-							<mat-icon aria-hidden="false" aria-label="remove book from favorite"
-								fontIcon="close"></mat-icon>
+						<div class="icons">
+							<mat-icon (click)="removeBookFromMyFavorite(book)" aria-hidden="false"
+								aria-label="remove book from favorite" fontIcon="close"></mat-icon>
 						</div>
 					</div>
 				</div>
 			</div>
-			<mat-selection-list *ngIf="myFavoriteBooks().length == 0">
+			<mat-selection-list *ngIf="myFavoriteBooks().length === 0">
 				<p class="empty-state-fav">There are no favorite books added yet.</p>
 			</mat-selection-list>
 		</mat-grid-tile>
-	
+
 	</mat-grid-list>
 </div>
