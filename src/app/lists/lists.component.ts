@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import {MatListModule} from '@angular/material/list';
 import {MatGridListModule} from '@angular/material/grid-list';
 import {MatIconModule} from '@angular/material/icon';
+import {CdkDragDrop, CdkDropList, CdkDrag, moveItemInArray} from '@angular/cdk/drag-drop';
 import { List } from '../interfaces/list';
 
 @Component({
   selector: 'app-lists',
   standalone: true,
-  imports: [CommonModule,MatListModule,MatGridListModule,MatIconModule],
+  imports: [CommonModule,MatListModule,MatGridListModule,MatIconModule,CdkDropList, CdkDrag],
   templateUrl: './lists.component.html',
   styleUrls: ['./lists.component.scss'],
   encapsulation:ViewEncapsulation.None
@@ -69,6 +70,9 @@ export class ListsComponent {
       book.favorite = false
       return value
     })
+  }
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.myFavoriteBooks(), event.previousIndex, event.currentIndex);
   }
   
 }

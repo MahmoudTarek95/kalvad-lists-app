@@ -1,9 +1,19 @@
 <div class="container">
+	<!-- <mat-grid-list cols="1" rowHeight="100px">
+		<mat-grid-tile>
+			<div class="add-book">
+				mmm
+			</div>
+		</mat-grid-tile>
+	</mat-grid-list> -->
 	<mat-grid-list cols="2" rowHeight="">
 		<mat-grid-tile>
-			<h2>
-				Books
-			</h2>
+			<div class="title">
+				<h2>
+					Books
+				</h2>
+				<span>You can favorite any or all of these books.</span>
+			</div>
 			<mat-selection-list>
 				<mat-list-item (click)="addOrRemoveBookToMyFavorite(book)" *ngFor="let book of booksList()">
 					<div class="item-container">
@@ -21,24 +31,27 @@
 			</mat-selection-list>
 		</mat-grid-tile>
 		<mat-grid-tile>
-			<h2>
-				My Favorite Books
-			</h2>
-			<mat-selection-list *ngIf="myFavoriteBooks().length > 0">
-				<mat-list-item (click)="removeBookFromMyFavorite(book)" *ngFor="let book of myFavoriteBooks()">
+			<div class="title">
+				<h2>
+					My Favorite Books
+				</h2>
+				<span>You can sort your favorite list by darg & drop books.</span>
+			</div>
+			<div class="drag-list" cdkDropList (cdkDropListDropped)="drop($event)" *ngIf="myFavoriteBooks().length > 0">
+				<div class="drag-box" cdkDrag *ngFor="let book of myFavoriteBooks()">
 					<div class="item-container">
 						<div class="item-details">
-							<div matListItemTitle>{{book?.name}}</div>
-							<div matListItemLine>{{book?.auther}}</div>
-							<div matListItemLine>{{book?.year}}</div>
+							<div >{{book?.name}}</div>
+							<div class="sub-title" >{{book?.auther}}</div>
+							<div class="sub-title" >{{book?.year}}</div>
 						</div>
-						<div class="fav">
+						<div class="fav" (click)="removeBookFromMyFavorite(book)">
 							<mat-icon aria-hidden="false" aria-label="remove book from favorite"
 								fontIcon="close"></mat-icon>
 						</div>
 					</div>
-				</mat-list-item>
-			</mat-selection-list>
+				</div>
+			</div>
 			<mat-selection-list *ngIf="myFavoriteBooks().length == 0">
 				<p class="empty-state-fav">There are no favorite books added yet.</p>
 			</mat-selection-list>
