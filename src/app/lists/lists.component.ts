@@ -18,36 +18,47 @@ export class ListsComponent {
     {
       name:"Dune",
       year:"1965",
-      auther:"Frank Herbert"
+      auther:"Frank Herbert",
+      favorite:false
     },
     {
       name:"Ender's Game",
       year:"1985",
-      auther:"Orson Scott Card"
+      auther:"Orson Scott Card",
+      favorite:false
     },
     {
       name:"1984",
       year:"1949",
-      auther:"George Orwell"
+      auther:"George Orwell",
+      favorite:false
     },
     {
       name:"Fahrenheit 451",
       year:"1953",
-      auther:"Ray Bradbury"
+      auther:"Ray Bradbury",
+      favorite:false
     },
     {
       name:"Brave New World",
       year:"1932",
-      auther:"Aldous Huxley"
+      auther:"Aldous Huxley",
+      favorite:false
     }
   ])
   myFavoriteBooks = signal<List[]>([])
   
   constructor(){}
 
-  addBookToMyFavorite(book:List){
+  addOrRemoveBookToMyFavorite(book:List){
     this.myFavoriteBooks.update((value:List[]) => {
-      value = [...value, book]
+      if(!value.includes(book)){
+        book.favorite = true
+        value = [...value, book]
+      }else{
+        book.favorite = false
+        value = value.filter(b => b.year != book.year)
+      }
       return value
     })
   }
@@ -55,6 +66,7 @@ export class ListsComponent {
   removeBookFromMyFavorite(book:List){
     this.myFavoriteBooks.update((value:List[]) => {
       value = value.filter(b => b.year != book.year)
+      book.favorite = false
       return value
     })
   }

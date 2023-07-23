@@ -1,21 +1,48 @@
-<mat-grid-list cols="2" rowHeight="2:1">
-	<mat-grid-tile>
-		<mat-selection-list>
-			<mat-list-item (click)="addBookToMyFavorite(book)" *ngFor="let book of booksList()">
-				<div matListItemTitle>{{book.name}}</div>
-				<div matListItemLine>{{book.auther}}</div>
-				<div matListItemLine>{{book.year}}</div>
-			</mat-list-item>
-		</mat-selection-list>
-	</mat-grid-tile>
-	<mat-grid-tile>
-		<mat-selection-list>
-			<mat-list-item (click)="removeBookFromMyFavorite(book)" *ngFor="let book of myFavoriteBooks()">
-				<div matListItemTitle>{{book?.name}}</div>
-				<div matListItemLine>{{book?.auther}}</div>
-				<div matListItemLine>{{book?.year}}</div>
-			</mat-list-item>
-		</mat-selection-list>
-	</mat-grid-tile>
-
-</mat-grid-list>
+<div class="container">
+	<mat-grid-list cols="2" rowHeight="">
+		<mat-grid-tile>
+			<h2>
+				Books
+			</h2>
+			<mat-selection-list>
+				<mat-list-item (click)="addOrRemoveBookToMyFavorite(book)" *ngFor="let book of booksList()">
+					<div class="item-container">
+						<div class="item-details">
+							<div matListItemTitle>{{book.name}}</div>
+							<div matListItemLine>{{book.auther}}</div>
+							<div matListItemLine>{{book.year}}</div>
+						</div>
+						<div class="fav">
+							<mat-icon aria-hidden="false" aria-label="favorite book"
+								[fontIcon]="book.favorite ? 'favorite': 'favorite_border' "></mat-icon>
+						</div>
+					</div>
+				</mat-list-item>
+			</mat-selection-list>
+		</mat-grid-tile>
+		<mat-grid-tile>
+			<h2>
+				My Favorite Books
+			</h2>
+			<mat-selection-list *ngIf="myFavoriteBooks().length > 0">
+				<mat-list-item (click)="removeBookFromMyFavorite(book)" *ngFor="let book of myFavoriteBooks()">
+					<div class="item-container">
+						<div class="item-details">
+							<div matListItemTitle>{{book?.name}}</div>
+							<div matListItemLine>{{book?.auther}}</div>
+							<div matListItemLine>{{book?.year}}</div>
+						</div>
+						<div class="fav">
+							<mat-icon aria-hidden="false" aria-label="remove book from favorite"
+								fontIcon="close"></mat-icon>
+						</div>
+					</div>
+				</mat-list-item>
+			</mat-selection-list>
+			<mat-selection-list *ngIf="myFavoriteBooks().length == 0">
+				<p class="empty-state-fav">There are no favorite books added yet.</p>
+			</mat-selection-list>
+		</mat-grid-tile>
+	
+	</mat-grid-list>
+</div>
